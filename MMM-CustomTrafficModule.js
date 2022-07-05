@@ -2,6 +2,34 @@ Module.register("MMM-CustomTrafficModule", {
 
         // Using https://docs.traveltime.com/api/start/routes
 
+        // {
+        //         module: 'MMM-CustomTrafficModule',
+        //         position: 'top_left',
+        //         config: {
+        //                 travelTimeAppId: '2a6adfe5',
+        //                 travelTimeApiKey: '469682f33e8b9ab1302352fead80533a',
+        //                 positionStackApiKey: '2c1b016dca74c2f45ccaa50d3e9f06db',
+        //                 origin: {
+        //                         "id": "Home",
+        //                         "searchString": "28 Ivy Nola Way, Henderson, Auckland",
+        //                 },
+        //                 destinations: [
+        //                         {
+        //                                 "id": "BNZ Parking",
+        //                                 "searchString": "33 Fort Street, Auckland CBD, Auckland",
+        //                         },
+        //                         {
+        //                                 "id": "Newmarket",
+        //                                 "searchString": "Westfield Newmarket Broadway, Newmarket, Auckland",
+        //                         },
+        //                         {
+        //                                 "id": "Kmart Henderson",
+        //                                 "searchString": "The Boundary 5 Vitasovich Avenue, Henderson, Auckland 0612",
+        //                         }
+        //                 ]
+        //         },
+        // },
+
         // Module config defaults
         defaults: {
                 travelTimeAppId: '', // 2a6adfe5
