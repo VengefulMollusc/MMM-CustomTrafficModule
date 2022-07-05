@@ -137,13 +137,52 @@ Module.register("MMM-CustomTrafficModule", {
                 const isoTime = new Date().toISOString()
                 console.log(isoTime);
 
-                wrapper.innerHTML += '<span><span>' + 'Test' + '<p></p>' + 'result ' + 'timeToDest' + '</span></span>';
+                wrapper.innerHTML = '<span>LOADING TRAVEL TIMES</span>';
 
                 this.fetchTravelTimes().then(() => {
                         console.log("saved data", this.travelTimeData);
+
+                        const resultsList = document.createElement('div');
+                        for (let i = 0; i < this.travelTimeData.length; i++) {
+                                var row = document.createElement('div');
+                                var destination = this.travelTimeData[i];
+                                row.innerHTML = 'Destination: ' + destination.id + ' - ' + destination.properties[0].travel_time;
+                                resultsList.appendChild(row);
+                        }
+                        wrapper.appendChild(resultsList);
                 });
 
-                // [
+                // travelTimeData [
+                //         {
+                //                 "id": "Newmarket",
+                //                 "properties": [
+                //                         {
+                //                                 "travel_time": 1626,
+                //                                 "distance": 18583
+                //                         }
+                //                 ]
+                //         },
+                //         {
+                //                 "id": "Kmart Henderson",
+                //                 "properties": [
+                //                         {
+                //                                 "travel_time": 341,
+                //                                 "distance": 1679
+                //                         }
+                //                 ]
+                //         },
+                //         {
+                //                 "id": "BNZ Parking",
+                //                 "properties": [
+                //                         {
+                //                                 "travel_time": 1748,
+                //                                 "distance": 20064
+                //                         }
+                //                 ]
+                //         }
+                // ]
+
+                // RAW [
                 //         {
                 //                 "search_id": "One-to-many Matrix",
                 //                 "locations": [
