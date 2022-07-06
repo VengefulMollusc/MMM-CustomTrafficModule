@@ -91,7 +91,7 @@ Module.register("MMM-CustomTrafficModule", {
                                 {
                                         "id": "One-to-many Matrix",
                                         "departure_location_id": this.config.origin.id,
-                                        "arrival_location_ids": this.config.destinations.map((d) => d.id),
+                                        "arrival_location_ids": destinations.map((d) => d.id),
                                         "transportation": {
                                                 "type": "driving"
                                         },
@@ -162,8 +162,8 @@ Module.register("MMM-CustomTrafficModule", {
 
                 // var self = this;
 
-                const isoTime = new Date().toISOString()
-                console.log(isoTime);
+                // const isoTime = new Date().toISOString()
+                // console.log(isoTime);
 
                 wrapper.innerHTML = '<span>LOADING TRAVEL TIMES</span>';
 
@@ -177,7 +177,9 @@ Module.register("MMM-CustomTrafficModule", {
                                 row.innerHTML = 'Destination: ' + destination.id + ' - ' + destination.properties[0].travel_time;
                                 resultsList.appendChild(row);
                         }
+                        wrapper.innerHTML = '';
                         wrapper.appendChild(resultsList);
+                        wrapper.innerHTML += '<span>last update ' + new Date().toISOString() + '</span>';
                 });
 
                 // travelTimeData [
