@@ -6,6 +6,7 @@ Module.register("MMM-CustomTrafficModule", {
         //         module: 'MMM-CustomTrafficModule',
         //         position: 'top_left',
         //         config: {
+        //                 bingMapsKey: 'AvE-U-CdL3R4HoB5HnL8g9cti6E5-QaDEpMNBQKzkeqKMN4s2LLG8JKoZoqvyzDt'
         //                 travelTimeAppId: '2a6adfe5',
         //                 travelTimeApiKey: '469682f33e8b9ab1302352fead80533a',
         //                 positionStackApiKey: '2c1b016dca74c2f45ccaa50d3e9f06db',
@@ -32,6 +33,7 @@ Module.register("MMM-CustomTrafficModule", {
 
         // Module config defaults
         defaults: {
+                bingMapsKey: '', // AvE-U-CdL3R4HoB5HnL8g9cti6E5-QaDEpMNBQKzkeqKMN4s2LLG8JKoZoqvyzDt
                 travelTimeAppId: '', // 2a6adfe5
                 travelTimeApiKey: '', // 469682f33e8b9ab1302352fead80533a
                 positionStackApiKey: '', // 2c1b016dca74c2f45ccaa50d3e9f06db
@@ -134,6 +136,24 @@ Module.register("MMM-CustomTrafficModule", {
                         });
         },
 
+        // http://dev.virtualearth.net/REST/v1/Routes/{travelMode}?wayPoint.1={wayPoint1}&viaWaypoint.2={viaWaypoint2}&waypoint.3={waypoint3}&wayPoint.n={waypointN}&heading={heading}&optimize={optimize}&avoid={avoid}&distanceBeforeFirstTurn={distanceBeforeFirstTurn}&routeAttributes={routeAttributes}&timeType={timeType}&dateTime={dateTime}&maxSolutions={maxSolutions}&tolerances={tolerances}&distanceUnit={distanceUnit}&key={BingMapsKey}
+
+        getTravelTimeBing: async function (destinationString, travelMode) {
+                const response = await fetch("http://dev.virtualearth.net/REST/v1/Routes/" + travelMode + "?" + new URLSearchParams({
+                        'wp.0': this.config.origin.searchString,
+                        'wp.1': destinationString,
+                        'optimize': 'timeWithTraffic',
+                        'key': this.config.bingMapsKey,
+                }));
+                if (!response.ok) {
+                        Log.error("MMM-TrafficTimesCustom: Bing maps API error ", response.status);
+                        return;
+                }
+                const data = await response.json();
+                console.log('bing data received: ', data);
+                return data;
+        },
+
 
 
         getStyles: function () {
@@ -144,8 +164,8 @@ Module.register("MMM-CustomTrafficModule", {
                 var self = this;
                 Log.info("Starting module: " + this.name);
 
-                if (this.config.appId === "" || this.config.appKey === "") {
-                        Log.error("MMM-TrafficTimesCustom: API key or App ID not provided!");
+                if (this.config.bingMapsKey === "") {
+                        Log.error("MMM-TrafficTimesCustom: Bing Maps API key not provided!");
                         return;
                 }
 
@@ -197,7 +217,13 @@ Module.register("MMM-CustomTrafficModule", {
                         }
                         wrapper.innerHTML = '';
                         wrapper.appendChild(resultsList);
-                        wrapper.innerHTML += '<p></p><span>last update ' + new Date().toISOString() + '</span>';
+                        wrapper.innerHTML += '<p></p><span>last update ' + new Date().toISOString() + '</span><p></p>';
+                });
+
+                this.getTravelTimeBing(this.config.destinations[0].searchString, 'Driving').then((data) => {
+                        var bingRow = document.createElement('div');
+                        bingRow.innerHTML = 'Bing data received';
+                        wrapper.appendChild(bingRow);
                 });
 
                 // travelTimeData [
