@@ -82,6 +82,11 @@ Module.register("MMM-CustomTrafficModule", {
                         destinations[i].coords = await this.getCoords(destinations[i].searchString);
                 }
                 destinations = destinations.filter((d) => !!d.coords?.lat); // filter out undefined coords
+                const arrivalIds = destinations.map((d) => d.id);
+
+                // save unreachable ids
+                this.unreachableIds = this.destinationIds.filter((d) => arrivalIds.indexOf(d.id) >= 0);
+
                 const params = {
                         "locations": [
                                 origin,
@@ -91,7 +96,7 @@ Module.register("MMM-CustomTrafficModule", {
                                 {
                                         "id": "One-to-many Matrix",
                                         "departure_location_id": this.config.origin.id,
-                                        "arrival_location_ids": destinations.map((d) => d.id),
+                                        "arrival_location_ids": arrivalIds,
                                         "transportation": {
                                                 "type": "driving"
                                         },
@@ -109,7 +114,7 @@ Module.register("MMM-CustomTrafficModule", {
         },
 
         fetchTravelTimes: async function () {
-                if (!this.travelTimeParams) {
+                if (!this.travelTimeParams || this.unreachableIds.length > 0) { // retry get params if unreachable destination
                         this.travelTimeParams = await this.getTravelTimeApiParams();
                 }
                 await fetch("https://api.traveltimeapp.com/v4/time-filter", {
@@ -149,6 +154,10 @@ Module.register("MMM-CustomTrafficModule", {
                         return;
                 }
 
+                // init ids array
+                this.destinationIds = this.config.destinations.map((d) => d.id);
+                this.unreachableIds = [];
+
                 setInterval(function () {
                         self.updateDom();
                 }, this.config.updateInterval);
@@ -174,12 +183,21 @@ Module.register("MMM-CustomTrafficModule", {
                         for (let i = 0; i < this.travelTimeData.length; i++) {
                                 var row = document.createElement('div');
                                 var destination = this.travelTimeData[i];
-                                row.innerHTML = 'Destination: ' + destination.id + ' - ' + destination.properties[0].travel_time;
+                                row.innerHTML = 'Destination: ' + destination.id + ' - time: ' + destination.properties[0].travel_time + ' - distance: ' + destination.properties[0].distance;
+                                resultsList.appendChild(row);
+                        }
+                        // note unreachable ids
+                        if (this.unreachableIds.length > 0) {
+                                var row = document.createElement('div');
+                                row.innerHTML = 'Unreachable';
+                                for (let i = 0; i < this.unreachableIds.length; i++) {
+                                        row.innerHTML += ' - ' + this.unreachableIds[i];
+                                }
                                 resultsList.appendChild(row);
                         }
                         wrapper.innerHTML = '';
                         wrapper.appendChild(resultsList);
-                        wrapper.innerHTML += '<span>last update ' + new Date().toISOString() + '</span>';
+                        wrapper.innerHTML += '<p></p><span>last update ' + new Date().toISOString() + '</span>';
                 });
 
                 // travelTimeData [
