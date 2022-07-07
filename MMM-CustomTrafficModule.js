@@ -6,26 +6,30 @@ Module.register("MMM-CustomTrafficModule", {
         //         module: 'MMM-CustomTrafficModule',
         //         position: 'top_left',
         //         config: {
-        //                 bingMapsKey: 'AvE-U-CdL3R4HoB5HnL8g9cti6E5-QaDEpMNBQKzkeqKMN4s2LLG8JKoZoqvyzDt'
-        //                 travelTimeAppId: '2a6adfe5',
-        //                 travelTimeApiKey: '469682f33e8b9ab1302352fead80533a',
-        //                 positionStackApiKey: '2c1b016dca74c2f45ccaa50d3e9f06db',
-        //                 origin: {
-        //                         "id": "Home",
-        //                         "searchString": "28 Ivy Nola Way, Henderson, Auckland",
-        //                 },
+        //                 bingMapsKey: 'AvE-U-CdL3R4HoB5HnL8g9cti6E5-QaDEpMNBQKzkeqKMN4s2LLG8JKoZoqvyzDt',
+        //                 origin: "28 Ivy Nola Way, Henderson, Auckland",
         //                 destinations: [
         //                         {
-        //                                 "id": "BNZ Parking",
+        //                                 "label": "BNZ Parking",
         //                                 "searchString": "33 Fort Street, Auckland CBD, Auckland",
+        //                                 "travelModes": [
+        //                                         "Driving",
+        //                                         "Transit"
+        //                                 ],
         //                         },
         //                         {
-        //                                 "id": "Newmarket",
+        //                                 "label": "Newmarket",
         //                                 "searchString": "Westfield Newmarket Broadway, Newmarket, Auckland",
+        //                                 "travelModes": [
+        //                                         "Driving",
+        //                                 ],
         //                         },
         //                         {
-        //                                 "id": "Kmart Henderson",
+        //                                 "label": "Kmart Henderson",
         //                                 "searchString": "The Boundary 5 Vitasovich Avenue, Henderson, Auckland 0612",
+        //                                 "travelModes": [
+        //                                         "Driving",
+        //                                 ],
         //                         }
         //                 ]
         //         },
@@ -34,9 +38,9 @@ Module.register("MMM-CustomTrafficModule", {
         // Module config defaults
         defaults: {
                 bingMapsKey: '', // AvE-U-CdL3R4HoB5HnL8g9cti6E5-QaDEpMNBQKzkeqKMN4s2LLG8JKoZoqvyzDt
-                travelTimeAppId: '', // 2a6adfe5
-                travelTimeApiKey: '', // 469682f33e8b9ab1302352fead80533a
-                positionStackApiKey: '', // 2c1b016dca74c2f45ccaa50d3e9f06db
+                // travelTimeAppId: '', // 2a6adfe5
+                // travelTimeApiKey: '', // 469682f33e8b9ab1302352fead80533a
+                // positionStackApiKey: '', // 2c1b016dca74c2f45ccaa50d3e9f06db
                 // destination1: 'Work:SW1A 2PW',
                 // destination2: 'Gym:XXX',
                 // destination3: 'School:XXX',
@@ -44,7 +48,7 @@ Module.register("MMM-CustomTrafficModule", {
                 // AvoidHighways: false,
                 // AvoidTolls: false,
                 // unitSystem: 'METRIC'
-                origin: {},
+                origin: '',
                 destinations: []
         },
 
@@ -140,9 +144,9 @@ Module.register("MMM-CustomTrafficModule", {
 
         getTravelTimeBing: async function (destinationString, travelMode) {
                 const response = await fetch("http://dev.virtualearth.net/REST/v1/Routes/" + travelMode + "?" + new URLSearchParams({
-                        'wp.0': this.config.origin.searchString,
+                        'wp.0': this.config.origin,
                         'wp.1': destinationString,
-                        'optimize': 'timeWithTraffic',
+                        'optimize': travelMode === 'Driving' ? 'timeWithTraffic' : 'time',
                         'key': this.config.bingMapsKey,
                 }));
                 if (!response.ok) {
@@ -152,6 +156,28 @@ Module.register("MMM-CustomTrafficModule", {
                 const data = await response.json();
                 console.log('bing data received: ', data);
                 return data;
+        },
+
+        fetchTravelTimesBing: async function () {
+                var travelTimes = [];
+                for (let i = 0; i < this.config.destinations.length; i++) {
+                        for (let j = 0; j < this.config.destinations[i].travelModes.length; j++) {
+                                const result = await this.getTravelTimeBing(this.config.destinations[i].searchString, this.config.destinations[i].travelModes[j]);
+                                if (result && result.statusDescription === 'OK') {
+                                        const routeLegs = result.resourceSets[0].resources[0].routeLegs[0];
+                                        travelTimes.push({
+                                                label: this.config.destinations[i].label,
+                                                travelDistance: routeLegs.travelDistance,
+                                                travelDuration: routeLegs.travelDuration,
+                                                endTime: routeLegs.endTime,
+                                                travelMode: routeLegs.travelMode,
+                                        });
+                                }
+                        }
+                }
+                console.log(travelTimes);
+                this.bingTravelTimesData = travelTimes;
+                this.lastUpdated = new Date().toISOString();
         },
 
 
@@ -169,14 +195,10 @@ Module.register("MMM-CustomTrafficModule", {
                         return;
                 }
 
-                if (this.config.origin === {} || this.config.destinations === []) {
+                if (this.config.origin === '' || this.config.destinations === []) {
                         Log.error("MMM-TrafficTimesCustom: Origin or destinations not provided!");
                         return;
                 }
-
-                // init ids array
-                this.destinationIds = this.config.destinations.map((d) => d.id);
-                this.unreachableIds = [];
 
                 setInterval(function () {
                         self.updateDom();
@@ -196,83 +218,36 @@ Module.register("MMM-CustomTrafficModule", {
 
                 wrapper.innerHTML = '<span>LOADING TRAVEL TIMES</span>';
 
-                this.fetchTravelTimes().then(() => {
-                        console.log("saved data", this.travelTimeData);
+                // this.fetchTravelTimes().then(() => {
+                //         console.log("saved data", this.travelTimeData);
 
-                        const resultsList = document.createElement('div');
-                        for (let i = 0; i < this.travelTimeData.length; i++) {
-                                var row = document.createElement('div');
-                                var destination = this.travelTimeData[i];
-                                row.innerHTML = 'Destination: ' + destination.id + ' - time: ' + destination.properties[0].travel_time + ' - distance: ' + destination.properties[0].distance;
-                                resultsList.appendChild(row);
-                        }
-                        // note unreachable ids
-                        if (this.unreachableIds.length > 0) {
-                                var row = document.createElement('div');
-                                row.innerHTML = 'Unreachable';
-                                for (let i = 0; i < this.unreachableIds.length; i++) {
-                                        row.innerHTML += ' - ' + this.unreachableIds[i];
-                                }
-                                resultsList.appendChild(row);
-                        }
-                        wrapper.innerHTML = '';
-                        wrapper.appendChild(resultsList);
-                        wrapper.innerHTML += '<p></p><span>last update ' + new Date().toISOString() + '</span><p></p>';
-                });
+                //         const resultsList = document.createElement('div');
+                //         for (let i = 0; i < this.travelTimeData.length; i++) {
+                //                 var row = document.createElement('div');
+                //                 var destination = this.travelTimeData[i];
+                //                 row.innerHTML = 'Destination: ' + destination.id + ' - time: ' + destination.properties[0].travel_time + ' - distance: ' + destination.properties[0].distance;
+                //                 resultsList.appendChild(row);
+                //         }
+                //         // note unreachable ids
+                //         if (this.unreachableIds.length > 0) {
+                //                 var row = document.createElement('div');
+                //                 row.innerHTML = 'Unreachable';
+                //                 for (let i = 0; i < this.unreachableIds.length; i++) {
+                //                         row.innerHTML += ' - ' + this.unreachableIds[i];
+                //                 }
+                //                 resultsList.appendChild(row);
+                //         }
+                //         // wrapper.innerHTML = '';
+                //         wrapper.appendChild(resultsList);
+                //         wrapper.innerHTML += '<p></p><span>last update ' + new Date().toISOString() + '</span>';
+                // });
 
-                this.getTravelTimeBing(this.config.destinations[0].searchString, 'Driving').then((data) => {
+                this.fetchTravelTimesBing().then(() => {
+                        console.log("saved Bing data", this.bingTravelTimesData);
                         var bingRow = document.createElement('div');
                         bingRow.innerHTML = 'Bing data received';
                         wrapper.appendChild(bingRow);
                 });
-
-                // travelTimeData [
-                //         {
-                //                 "id": "Newmarket",
-                //                 "properties": [
-                //                         {
-                //                                 "travel_time": 1626,
-                //                                 "distance": 18583
-                //                         }
-                //                 ]
-                //         },
-                //         {
-                //                 "id": "Kmart Henderson",
-                //                 "properties": [
-                //                         {
-                //                                 "travel_time": 341,
-                //                                 "distance": 1679
-                //                         }
-                //                 ]
-                //         },
-                //         {
-                //                 "id": "BNZ Parking",
-                //                 "properties": [
-                //                         {
-                //                                 "travel_time": 1748,
-                //                                 "distance": 20064
-                //                         }
-                //                 ]
-                //         }
-                // ]
-
-                // RAW [
-                //         {
-                //                 "search_id": "One-to-many Matrix",
-                //                 "locations": [
-                //                         {
-                //                                 "id": "BNZ Parking",
-                //                                 "properties": [
-                //                                         {
-                //                                                 "travel_time": 1474,
-                //                                                 "distance": 20579
-                //                                         }
-                //                                 ]
-                //                         }
-                //                 ],
-                //                 "unreachable": []
-                //         }
-                // ]
 
                 return wrapper;
         }
