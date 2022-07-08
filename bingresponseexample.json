@@ -1191,3 +1191,412 @@
     "statusDescription": "OK",
     "traceId": "2ff6043b89ed478b947e6e915467b76b|PUS0004C80|0.0.0.0|PUS00021F5, Leg0-PUS00021F2|Ref A: CA49D963B2A4403BAD4ED4150E1E61C5 Ref B: SEL20EDGE0313 Ref C: 2022-07-07T01:59:56Z|Ref A: 428558F243AA41A69D3C5E1D0DD32E44 Ref B: SEL20EDGE0406 Ref C: 2022-07-07T01:59:56Z"
 }
+
+{
+    "authenticationResultCode": "ValidCredentials",
+    "brandLogoUri": "http://dev.virtualearth.net/Branding/logo_powered_by.png",
+    "copyright": "Copyright © 2022 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation.",
+    "resourceSets": [
+        {
+            "estimatedTotal": 1,
+            "resources": [
+                {
+                    "__type": "Route:http://schemas.microsoft.com/search/local/ws/rest/v1",
+                    "bbox": [
+                        -36.91161,
+                        174.623879,
+                        -36.84429,
+                        174.78215
+                    ],
+                    "id": "v70,h-1783731793,i0,a0,cen-US,dAAAAAAAAAAA1,y1,s1,m4,o1,t0,wpSxDHOtyQsAdlDDT9tNlQA2~ATExAakxLhNTAADgAbSgJj8A0~MjggSXZ5IE5vbGEgV2F5LCBIZW5kZXJzb24sIEF1Y2tsYW5kIDA2MTI1~~~~~~~~v12,wv0NRoE9sQsBW8UbmkdhlQA2~ATExAanpnBhTAADgAWvCzD4A0~MzMgRm9ydCBTdHJlZXQsIEF1Y2tsYW5kIENlbnRyYWwsIEF1Y2tsYW5kIDEwMTA1~~~~~~~~v12,k1",
+                    "distanceUnit": "Kilometer",
+                    "durationUnit": "Second",
+                    "routeLegs": [
+                        {
+                            "actualEnd": {
+                                "type": "Point",
+                                "coordinates": [
+                                    -36.846182,
+                                    174.76781
+                                ]
+                            },
+                            "actualStart": {
+                                "type": "Point",
+                                "coordinates": [
+                                    -36.897801,
+                                    174.623879
+                                ]
+                            },
+                            "alternateVias": [],
+                            "endLocation": {
+                                "bbox": [
+                                    -36.84722,
+                                    174.76664,
+                                    -36.84542,
+                                    174.76888
+                                ],
+                                "name": "33 Fort Street, Auckland Central, Auckland 1010",
+                                "point": {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -36.84632,
+                                        174.76776
+                                    ]
+                                },
+                                "address": {
+                                    "addressLine": "33 Fort Street",
+                                    "adminDistrict": "North Island",
+                                    "adminDistrict2": "Auckland",
+                                    "countryRegion": "New Zealand",
+                                    "formattedAddress": "33 Fort Street, Auckland Central, Auckland 1010",
+                                    "locality": "Auckland",
+                                    "postalCode": "1010"
+                                },
+                                "confidence": "High",
+                                "entityType": "Address",
+                                "geocodePoints": [
+                                    {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.84632,
+                                            174.76776
+                                        ],
+                                        "calculationMethod": "Rooftop",
+                                        "usageTypes": [
+                                            "Display"
+                                        ]
+                                    },
+                                    {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.84618,
+                                            174.76781
+                                        ],
+                                        "calculationMethod": "None",
+                                        "usageTypes": [
+                                            "Route"
+                                        ]
+                                    }
+                                ],
+                                "matchCodes": [
+                                    "Good"
+                                ]
+                            },
+                            "endTime": "/Date(1657242068000-0700)/",
+                            "itineraryItems": [
+                                {
+                                    "compassDirection": "",
+                                    "details": [
+                                        {
+                                            "endPathIndices": [
+                                                14
+                                            ],
+                                            "maneuverType": "Walk",
+                                            "mode": "Transit",
+                                            "roadType": "NotApplicable",
+                                            "startPathIndices": [
+                                                0
+                                            ]
+                                        }
+                                    ],
+                                    "exit": "",
+                                    "iconType": "Walk",
+                                    "instruction": {
+                                        "formattedText": null,
+                                        "maneuverType": "DepartStart",
+                                        "text": "Walk from 28 Ivy Nola Way, Henderson, Auckland 0612 to Sunnyvale Train Station"
+                                    },
+                                    "isRealTimeTransit": false,
+                                    "maneuverPoint": {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.897801,
+                                            174.623879
+                                        ]
+                                    },
+                                    "realTimeTransitDelay": 0,
+                                    "sideOfStreet": "Unknown",
+                                    "tollZone": "",
+                                    "transitTerminus": "",
+                                    "travelDistance": 1.18,
+                                    "travelDuration": 850,
+                                    "travelMode": "Transit"
+                                },
+                                {
+                                    "childItineraryItems": [
+                                        {
+                                            "compassDirection": "",
+                                            "details": [
+                                                {
+                                                    "maneuverType": "TransitDepart",
+                                                    "mode": "Transit",
+                                                    "names": [
+                                                        "Sunnyvale Train Station"
+                                                    ],
+                                                    "roadType": "None"
+                                                }
+                                            ],
+                                            "exit": "",
+                                            "iconType": "None",
+                                            "instruction": {
+                                                "formattedText": null,
+                                                "maneuverType": "TransitDepart",
+                                                "text": "Depart from Sunnyvale Train Station"
+                                            },
+                                            "isRealTimeTransit": false,
+                                            "maneuverPoint": {
+                                                "type": "Point",
+                                                "coordinates": [
+                                                    -36.89687,
+                                                    174.63201
+                                                ]
+                                            },
+                                            "realTimeTransitDelay": 0,
+                                            "sideOfStreet": "Unknown",
+                                            "time": "/Date(1657239120000-0700)/",
+                                            "tollZone": "",
+                                            "transitStopId": 2887571,
+                                            "transitTerminus": "",
+                                            "travelDistance": 0,
+                                            "travelDuration": 0,
+                                            "travelMode": "Transit",
+                                            "tripId": 10011382
+                                        },
+                                        {
+                                            "compassDirection": "",
+                                            "details": [
+                                                {
+                                                    "maneuverType": "TransitArrive",
+                                                    "mode": "Transit",
+                                                    "names": [
+                                                        "Britomart Train Station"
+                                                    ],
+                                                    "roadType": "None"
+                                                }
+                                            ],
+                                            "exit": "",
+                                            "iconType": "None",
+                                            "instruction": {
+                                                "formattedText": null,
+                                                "maneuverType": "TransitArrive",
+                                                "text": "Arrive at Britomart Train Station"
+                                            },
+                                            "isRealTimeTransit": false,
+                                            "maneuverPoint": {
+                                                "type": "Point",
+                                                "coordinates": [
+                                                    -36.84429,
+                                                    174.76848
+                                                ]
+                                            },
+                                            "realTimeTransitDelay": 0,
+                                            "sideOfStreet": "Unknown",
+                                            "time": "/Date(1657241880000-0700)/",
+                                            "tollZone": "",
+                                            "transitStopId": 2887583,
+                                            "transitTerminus": "",
+                                            "travelDistance": 0,
+                                            "travelDuration": 0,
+                                            "travelMode": "Transit",
+                                            "tripId": 10011382
+                                        }
+                                    ],
+                                    "compassDirection": "",
+                                    "details": [
+                                        {
+                                            "endPathIndices": [
+                                                123
+                                            ],
+                                            "maneuverType": "TakeTransit",
+                                            "mode": "Transit",
+                                            "roadType": "NotApplicable",
+                                            "startPathIndices": [
+                                                14
+                                            ]
+                                        }
+                                    ],
+                                    "exit": "",
+                                    "hints": [
+                                        {
+                                            "hintType": "PreviousTransitStop",
+                                            "text": "Your stop is next after Parnell Train Station"
+                                        }
+                                    ],
+                                    "iconType": "Train",
+                                    "instruction": {
+                                        "formattedText": null,
+                                        "maneuverType": "TakeTransit",
+                                        "text": "Inter-city Rail: West - Britomart"
+                                    },
+                                    "isRealTimeTransit": false,
+                                    "maneuverPoint": {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.89687,
+                                            174.63201
+                                        ]
+                                    },
+                                    "realTimeTransitDelay": 0,
+                                    "sideOfStreet": "Unknown",
+                                    "tollZone": "",
+                                    "transitLine": {
+                                        "abbreviatedName": "West",
+                                        "agencyId": 5861,
+                                        "agencyName": "AT Metro",
+                                        "bookingUri": "",
+                                        "lineColor": 16777215,
+                                        "phoneNumber": "(09)355-3553",
+                                        "providerInfo": "Service provider: AT Metro - (09)355-3553",
+                                        "scheduleUri": "",
+                                        "transportType": 4,
+                                        "uri": "http://www.aucklandtransport.govt.nz",
+                                        "verboseName": "Swanson Train Station to Britomart Train Station",
+                                        "version": "Jun 24 2022 10:24PM"
+                                    },
+                                    "transitTerminus": "Britomart",
+                                    "travelDistance": 20.33,
+                                    "travelDuration": 2760,
+                                    "travelMode": "Transit"
+                                },
+                                {
+                                    "compassDirection": "",
+                                    "details": [
+                                        {
+                                            "endPathIndices": [
+                                                127
+                                            ],
+                                            "maneuverType": "Walk",
+                                            "mode": "Transit",
+                                            "roadType": "NotApplicable",
+                                            "startPathIndices": [
+                                                123
+                                            ]
+                                        }
+                                    ],
+                                    "exit": "",
+                                    "iconType": "Walk",
+                                    "instruction": {
+                                        "formattedText": null,
+                                        "maneuverType": "ArriveFinish",
+                                        "text": "Walk from Britomart Train Station to 33 Fort Street, Auckland Central, Auckland 1010"
+                                    },
+                                    "isRealTimeTransit": false,
+                                    "maneuverPoint": {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.84429,
+                                            174.76848
+                                        ]
+                                    },
+                                    "realTimeTransitDelay": 0,
+                                    "sideOfStreet": "Unknown",
+                                    "tollZone": "",
+                                    "transitTerminus": "",
+                                    "travelDistance": 0.261,
+                                    "travelDuration": 188,
+                                    "travelMode": "Transit"
+                                }
+                            ],
+                            "routeRegion": "Transit-WDTT",
+                            "routeSubLegs": [
+                                {
+                                    "endWaypoint": {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.846182,
+                                            174.76781
+                                        ],
+                                        "description": "33 Fort Street, Auckland Central, Auckland 1010",
+                                        "isVia": false,
+                                        "locationIdentifier": "1|49|49|1|169|233|156|24|83|0|0|224|1|107|194|204|62|0|-36.846182,174.76781",
+                                        "routePathIndex": 127
+                                    },
+                                    "startWaypoint": {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.897801,
+                                            174.623879
+                                        ],
+                                        "description": "28 Ivy Nola Way, Henderson, Auckland 0612",
+                                        "isVia": false,
+                                        "locationIdentifier": "1|49|49|1|169|49|46|19|83|0|0|224|1|180|160|38|63|0|-36.897801,174.623879",
+                                        "routePathIndex": 0
+                                    },
+                                    "travelDistance": 21.771,
+                                    "travelDuration": 3798
+                                }
+                            ],
+                            "startLocation": {
+                                "bbox": [
+                                    -36.89879,
+                                    174.62267,
+                                    -36.89699,
+                                    174.62491
+                                ],
+                                "name": "28 Ivy Nola Way, Henderson, Auckland 0612",
+                                "point": {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -36.89789,
+                                        174.62379
+                                    ]
+                                },
+                                "address": {
+                                    "addressLine": "28 Ivy Nola Way",
+                                    "adminDistrict": "North Island",
+                                    "adminDistrict2": "Auckland",
+                                    "countryRegion": "New Zealand",
+                                    "formattedAddress": "28 Ivy Nola Way, Henderson, Auckland 0612",
+                                    "locality": "Auckland",
+                                    "postalCode": "0612"
+                                },
+                                "confidence": "High",
+                                "entityType": "Address",
+                                "geocodePoints": [
+                                    {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.89789,
+                                            174.62379
+                                        ],
+                                        "calculationMethod": "Rooftop",
+                                        "usageTypes": [
+                                            "Display"
+                                        ]
+                                    },
+                                    {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            -36.8978,
+                                            174.62388
+                                        ],
+                                        "calculationMethod": "None",
+                                        "usageTypes": [
+                                            "Route"
+                                        ]
+                                    }
+                                ],
+                                "matchCodes": [
+                                    "Good"
+                                ]
+                            },
+                            "startTime": "/Date(1657238270000-0700)/",
+                            "travelDistance": 21.771,
+                            "travelDuration": 3798,
+                            "travelMode": "Transit"
+                        }
+                    ],
+                    "trafficCongestion": "Unknown",
+                    "trafficDataUsed": "None",
+                    "travelDistance": 21.771,
+                    "travelDuration": 3798,
+                    "travelDurationTraffic": 0,
+                    "travelMode": "Transit"
+                }
+            ]
+        }
+    ],
+    "statusCode": 200,
+    "statusDescription": "OK",
+    "traceId": "30ef66047a434615b45c115e45190f39|PUS0004C64|0.0.0.0|PUS0005C76, Leg0-PUS0004C2D|Ref A: E0C61F8486A145D8B725FD38B54F2248 Ref B: SEL20EDGE0305 Ref C: 2022-07-07T04:51:27Z|Ref A: DB173DDF4ABB489A82E095E195FF8501 Ref B: SEL20EDGE0418 Ref C: 2022-07-07T04:51:27Z"
+}

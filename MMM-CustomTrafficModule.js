@@ -169,8 +169,11 @@ Module.register("MMM-CustomTrafficModule", {
                                                 label: this.config.destinations[i].label,
                                                 travelDistance: routeLegs.travelDistance,
                                                 travelDuration: routeLegs.travelDuration,
-                                                endTime: routeLegs.endTime,
                                                 travelMode: routeLegs.travelMode,
+                                                endTime: routeLegs.endTime,
+                                                pass1: routeLegs.endTime.substr(6),
+                                                pass2: parseInt(routeLegs.endTime.substr(6)),
+                                                pass3: new Date(parseInt(routeLegs.endTime.substr(6))),
                                         });
                                 }
                         }
